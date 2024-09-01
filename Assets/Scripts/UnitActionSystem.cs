@@ -12,6 +12,9 @@ public class UnitActionSystem : MonoBehaviour
     [SerializeField] private LayerMask _unitLayerMask;
 
     public event EventHandler OnSelectedUnitChanged;
+    public event EventHandler OnSelectedActionChanged;
+    public event EventHandler<bool> OnBusyChanged;
+    public event EventHandler OnActionStarted;
     private bool _isBusy;
     private BaseAction _selectedAction;
 
@@ -36,7 +39,13 @@ public class UnitActionSystem : MonoBehaviour
         {
             return;
         }
-        if(EventSystem.current.IsPointerOverGameObject())
+
+        if(!TurnSystem.Instance.IsPlayerTurn())
+        {
+            return;
+        }
+
+        if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -56,8 +65,12 @@ public class UnitActionSystem : MonoBehaviour
 
             if (_selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                SetBusy();
-                _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+                if (_selectedUnit.TrySpendActionsPointsToTakeAction(_selectedAction))
+                {
+                    SetBusy();
+                    _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+                    OnActionStarted?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
     }
@@ -70,11 +83,18 @@ public class UnitActionSystem : MonoBehaviour
             {
                 if (hitInfo.transform.TryGetComponent<Unit>(out Unit unit))
                 {
-                    if(unit == _selectedUnit)
+                    if (unit == _selectedUnit)
                     {
                         // Unit is already selected
                         return false;
                     }
+
+                    if(unit.IsEnemy())
+                    {
+                        // Clicked on an enemy
+                        return false;
+                    }
+
                     SetSelectedUnit(unit);
                     return true;
                 }
@@ -83,7 +103,7 @@ public class UnitActionSystem : MonoBehaviour
         return false;
     }
 
-    void SetSelectedUnit(Unit unit)
+    void SetSelectedUnit(Unit unit)  // POLYMORPHISM
     {
         _selectedUnit = unit;
         SetSelectedAction(unit.GetMoveAction());
@@ -93,6 +113,7 @@ public class UnitActionSystem : MonoBehaviour
     public void SetSelectedAction(BaseAction baseAction)
     {
         _selectedAction = baseAction;
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
     }
     public Unit GetSelectedUnit()
     {
@@ -101,13 +122,19 @@ public class UnitActionSystem : MonoBehaviour
     public BaseAction GetSelectedAction()
     {
         return _selectedAction;
-    }    
+    }
     private void SetBusy()
     {
         _isBusy = true;
+        OnBusyChanged?.Invoke(this, _isBusy);
     }
     private void ClearBusy()
     {
         _isBusy = false;
+        OnBusyChanged?.Invoke(this, _isBusy);
+    }
+    public bool GetBusy()
+    {
+        return _isBusy;
     }
 }

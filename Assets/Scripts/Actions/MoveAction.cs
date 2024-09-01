@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveAction : BaseAction  // INHERITANCE
+public class MoveAction : BaseAction
 {
     [SerializeField] Animator _unitAnimator;
     private float _speed = 4f;

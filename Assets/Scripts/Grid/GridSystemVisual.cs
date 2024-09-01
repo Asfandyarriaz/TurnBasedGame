@@ -64,4 +64,5 @@ public class GridSystemVisual : MonoBehaviour
         ShowGridPositionList(
             selectedAction.GetValidActionGridPositionList());
     }
+    
 }
