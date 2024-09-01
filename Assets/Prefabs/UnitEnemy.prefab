@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 7d22fc6b9a431b043a917fb89a80bcfc, type: 2}
     - target: {fileID: 6879522393280484888, guid: a391e1d20a69ff24d89a6e3e28cf08db, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6879522393280484888, guid: a391e1d20a69ff24d89a6e3e28cf08db, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6879522393280484888, guid: a391e1d20a69ff24d89a6e3e28cf08db, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6879522393280484888, guid: a391e1d20a69ff24d89a6e3e28cf08db, type: 3}
       propertyPath: m_LocalRotation.w
@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6932222691798121374, guid: a391e1d20a69ff24d89a6e3e28cf08db, type: 3}
+      propertyPath: _health
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014070458677299465, guid: a391e1d20a69ff24d89a6e3e28cf08db, type: 3}
+      propertyPath: _unitRagdollPrefab
+      value: 
+      objectReference: {fileID: 3468225292189351410, guid: c84fd2d57c88db547a3ebfefd9262ed9, type: 3}
     - target: {fileID: 7634581992470907119, guid: a391e1d20a69ff24d89a6e3e28cf08db, type: 3}
       propertyPath: m_Name
       value: UnitEnemy

@@ -15,6 +15,7 @@ public class UnitActionSystem : MonoBehaviour
     public event EventHandler OnSelectedActionChanged;
     public event EventHandler<bool> OnBusyChanged;
     public event EventHandler OnActionStarted;
+
     private bool _isBusy;
     private BaseAction _selectedAction;
 
@@ -65,7 +66,7 @@ public class UnitActionSystem : MonoBehaviour
 
             if (_selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                if (_selectedUnit.TrySpendActionsPointsToTakeAction(_selectedAction))
+                if (_selectedUnit.TrySpendActionPointsToTakeAction(_selectedAction))
                 {
                     SetBusy();
                     _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
@@ -103,10 +104,10 @@ public class UnitActionSystem : MonoBehaviour
         return false;
     }
 
-    void SetSelectedUnit(Unit unit)  // POLYMORPHISM
+    void SetSelectedUnit(Unit unit)
     {
         _selectedUnit = unit;
-        SetSelectedAction(unit.GetMoveAction());  // ABSTRACTION
+        SetSelectedAction(unit.GetAction<MoveAction>());
 
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -119,11 +120,11 @@ public class UnitActionSystem : MonoBehaviour
     {
         return _selectedUnit;
     }
-    public BaseAction GetSelectedAction() // ENCAPSULATION
+    public BaseAction GetSelectedAction()
     {
         return _selectedAction;
     }
-    private void SetBusy() // ENCAPSULATION
+    private void SetBusy()
     {
         _isBusy = true;
         OnBusyChanged?.Invoke(this, _isBusy);

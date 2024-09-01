@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using TMPro;
+
 
 public class GridDebugObject : MonoBehaviour
 {
-    private GridObject _gridObject;
     [SerializeField] private TextMeshProUGUI _textMeshProUGUI;
 
-    public void SetGridObject(GridObject gridObject)
+    private object _gridObject;
+
+    public virtual void SetGridObject(object gridObject)
     {
         _gridObject = gridObject;
     }
-    private void Update()
+    protected virtual void Update()
     {
         _textMeshProUGUI.text = _gridObject.ToString();
     }

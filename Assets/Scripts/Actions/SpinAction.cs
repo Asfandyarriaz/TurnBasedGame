@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class SpinAction : BaseAction
 {
-
     private float _totalSpinAddAmount;
-    public Action SpinCompleteAction;
+    public Action OnActionComplete;
     private void Update()
     {
         if (!_isActive)
@@ -19,17 +18,16 @@ public class SpinAction : BaseAction
 
         if (_totalSpinAddAmount >= 360)
         {
-            _isActive = false;
-            SpinCompleteAction();
+            ActionComplete();
         }
 
     }
 
-    public override void TakeAction(GridPosition gridPosition, Action SpinCompleteAction)
+    public override void TakeAction(GridPosition gridPosition, Action OnActionComplete)
     {
-        _isActive = true;
         _totalSpinAddAmount = 0;
-        this.SpinCompleteAction = SpinCompleteAction;
+
+        ActionStart(OnActionComplete);
     }
 
     public override string GetActionName()
@@ -50,6 +48,18 @@ public class SpinAction : BaseAction
 
     public override int GetActionPointCost()
     {
-        return 2;
+        return 1;
     }
+
+
+    public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
+    {
+        return new EnemyAIAction
+        {
+            gridPosition = gridPosition,
+            actionValue = 0,
+        };
+    }
+
+
 }
