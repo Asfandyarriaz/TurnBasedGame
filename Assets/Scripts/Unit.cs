@@ -4,33 +4,48 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] Animator _unitAnimator;
-    private float _speed = 4f;
-    private Vector3 _targetPosition;
-    private float _stoppingDistance = 0.1f;
-    private float _rotateSpeed = 10f;
-
+    private GridPosition _gridPosition;
+    private MoveAction _moveAction;
+    private SpinAction _spinAction;
+    private BaseAction[] _baseActionArray;
     private void Awake()
     {
-        _targetPosition = transform.position;
+        _moveAction = GetComponent<MoveAction>();
+        _spinAction = GetComponent<SpinAction>();
+        _baseActionArray = GetComponents<BaseAction>(); 
+
+    }
+    private void Start()
+    {
+        _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
     }
     private void Update()
     {
-        if (Vector3.Distance(transform.position, _targetPosition) >= _stoppingDistance)
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        if (newGridPosition != _gridPosition)
         {
-            Vector3 moveDirection = (_targetPosition - transform.position).normalized;
-            transform.position += moveDirection * _speed * Time.deltaTime;
-
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * _rotateSpeed);
-            _unitAnimator.SetBool("isWalking", true);
+            //Unit move grid position
+            LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, newGridPosition);
+            _gridPosition = newGridPosition;
         }
-        else
-            _unitAnimator.SetBool("isWalking", false);
-
     }
-
-    public void Move(Vector3 targetPosition)
+    public MoveAction GetMoveAction()
     {
-        _targetPosition = targetPosition;
+        return _moveAction;
     }
+    public SpinAction GetSpingAction()
+    {
+        return _spinAction;
+    }
+    public GridPosition GetGridPosition()
+    {
+        return _gridPosition;
+    }
+
+    public BaseAction[] GetBaseActionArray()
+    {
+        return _baseActionArray;
+    }
+
 }
