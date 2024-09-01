@@ -106,7 +106,7 @@ public class UnitActionSystem : MonoBehaviour
     void SetSelectedUnit(Unit unit)  // POLYMORPHISM
     {
         _selectedUnit = unit;
-        SetSelectedAction(unit.GetMoveAction());
+        SetSelectedAction(unit.GetMoveAction());  // ABSTRACTION
 
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
