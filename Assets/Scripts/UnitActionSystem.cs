@@ -119,11 +119,11 @@ public class UnitActionSystem : MonoBehaviour
     {
         return _selectedUnit;
     }
-    public BaseAction GetSelectedAction()
+    public BaseAction GetSelectedAction() // ENCAPSULATION
     {
         return _selectedAction;
     }
-    private void SetBusy()
+    private void SetBusy() // ENCAPSULATION
     {
         _isBusy = true;
         OnBusyChanged?.Invoke(this, _isBusy);
